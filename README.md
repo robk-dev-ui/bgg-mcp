@@ -34,7 +34,7 @@ make all
 
 ### VS Code (Insiders), Claude, Cursor
 
-Download the compiled server from the latest release, or build it yourself:
+Download the compiled server from the [latest release](https://github.com/kkjdaniel/bgg-mcp/releases), or build it yourself:
 
 ```bash
 # Using Go directly
