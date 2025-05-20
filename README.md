@@ -18,7 +18,7 @@ BGG MCP is an MCP (Model Context Protocol) server that enables AI tools like Cla
 
 ### Go
 
-You will need to have Go installed on your system to run the binary. This can be easily [downloaded and setup here](https://go.dev/doc/install), or you can use the package manager that you prefer such as Brew.
+You will need to have Go installed on your system to build binary. This can be easily [downloaded and setup here](https://go.dev/doc/install), or you can use the package manager that you prefer such as Brew.
 
 ### Using Makefile
 
@@ -37,7 +37,7 @@ make all
 
 ### VS Code (Insiders), Claude, Cursor
 
-Download the compiled server from the [latest release](https://github.com/kkjdaniel/bgg-mcp/releases), or build it yourself:
+First build the server binary:
 
 ```bash
 # Using Go directly
@@ -47,7 +47,7 @@ go build -o build/bgg-mcp
 make build
 ```
 
-In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add the following to your list of servers:
+In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add the following to your list of servers, pointing it to the create binary:
 
 ```json
 "bgg": {
