@@ -1,14 +1,22 @@
 # BGG MCP 🎲🤖
 
 > [!WARNING]  
-> This project is very much under active developmennt, it may still have some bugs.
+> This project is very much under active developmennt, tools are liable to change.
 
 BGG MCP is an MCP (Model Context Protocol) server that enables AI tools like Claude to interact with the BoardGameGeek API (XML API2). The server is implemented in Go, using the [GoGeek](https://github.com/kkjdaniel/gogeek) library.
 
 ## Tools
 
-- Search _(find games by name)_
+- Search _(find games by name, currently returns best match)_
 - Collection _(find and filter about a users collection)_
+
+## Roadmap
+
+- [x] Search
+- [x] Collection (+ filters)
+- [ ] Hot Games
+- [ ] Specific Game Details
+- [ ] User Details
 
 ## Example
 
