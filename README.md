@@ -26,7 +26,9 @@ BGG MCP is an MCP (Model Context Protocol) server that enables AI tools like Cla
 
 ## Setup
 
-### Installing via Smithery
+You have two options for setting up, the easiest is to use the integration of Smithery.
+
+### A) Installing via Smithery
 
 To install bgg-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp):
 
@@ -34,11 +36,13 @@ To install bgg-mcp for Claude Desktop automatically via [Smithery](https://smith
 npx -y @smithery/cli install @kkjdaniel/bgg-mcp --client claude
 ```
 
-### 1. Install Go
+### B) Manual Setup
+
+#### 1. Install Go
 
 You will need to have Go installed on your system to build binary. This can be easily [downloaded and setup here](https://go.dev/doc/install), or you can use the package manager that you prefer such as Brew.
 
-### 2. Build
+#### 2. Build
 
 The project includes a Makefile to simplify building and managing the binary.
 
@@ -59,7 +63,7 @@ Or you can simply build it directly with Go...
 go build -o build/bgg-mcp
 ```
 
-### 3. Add MCP Config
+#### 3. Add MCP Config
 
 In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add the following to your list of servers, pointing it to the binary you created earlier, once you load up your AI tool you should see the tools provided by the server connected:
 
