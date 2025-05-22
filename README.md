@@ -1,5 +1,7 @@
 # BGG MCP 🎲🤖
 
+[![smithery badge](https://smithery.ai/badge/@kkjdaniel/bgg-mcp)](https://smithery.ai/server/@kkjdaniel/bgg-mcp)
+
 > [!WARNING]  
 > This project is under active developmennt, therefore expect tooling to change.
 
@@ -23,6 +25,14 @@ BGG MCP is an MCP (Model Context Protocol) server that enables AI tools like Cla
 ![Example of BGG MCP in action](example.png)
 
 ## Setup
+
+### Installing via Smithery
+
+To install bgg-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp):
+
+```bash
+npx -y @smithery/cli install @kkjdaniel/bgg-mcp --client claude
+```
 
 ### 1. Install Go
 
