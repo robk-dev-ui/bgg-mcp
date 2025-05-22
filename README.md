@@ -1,7 +1,7 @@
 # BGG MCP 🎲🤖
 
 > [!WARNING]  
-> This project is very much under active developmennt, tools are liable to change.
+> This project is under active developmennt, therefore expect tooling to change.
 
 BGG MCP is an MCP (Model Context Protocol) server that enables AI tools like Claude to interact with the BoardGameGeek API (XML API2). The server is implemented in Go, using the [GoGeek](https://github.com/kkjdaniel/gogeek) library.
 
@@ -12,23 +12,23 @@ BGG MCP is an MCP (Model Context Protocol) server that enables AI tools like Cla
 
 ## Roadmap
 
-- [x] Search
+- [x] Specific Game Details _(by name)_
 - [x] Collection (+ filters)
 - [ ] Hot Games
-- [ ] Specific Game Details
 - [ ] User Details
+- [ ] Recommended Games
 
 ## Example
 
 ![Example of BGG MCP in action](example.png)
 
-## Installation
+## Setup
 
-### Go
+### 1. Install Go
 
 You will need to have Go installed on your system to build binary. This can be easily [downloaded and setup here](https://go.dev/doc/install), or you can use the package manager that you prefer such as Brew.
 
-### Using Makefile
+### 2. Build
 
 The project includes a Makefile to simplify building and managing the binary.
 
@@ -43,19 +43,15 @@ make clean
 make all
 ```
 
-### VS Code (Insiders), Claude, Cursor
-
-First build the server binary:
+Or you can simply build it directly with Go...
 
 ```bash
-# Using Go directly
 go build -o build/bgg-mcp
-
-# Or using Make
-make build
 ```
 
-In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add the following to your list of servers, pointing it to the create binary:
+### 3. Add MCP Config
+
+In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add the following to your list of servers, pointing it to the binary you created earlier, once you load up your AI tool you should see the tools provided by the server connected:
 
 ```json
 "bgg": {
@@ -65,3 +61,18 @@ In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add th
 ```
 
 More details for configuring Claude can be [found here](https://modelcontextprotocol.io/quickstart/user).
+
+## Using Makefile
+
+The project includes a Makefile to simplify building and managing the binary.
+
+```bash
+# Build the application (output goes to build/bgg-mcp)
+make build
+
+# Clean build artifacts
+make clean
+
+# Both clean and build
+make all
+```
