@@ -1,4 +1,4 @@
-# BGG MCP 🎲🤖
+# BoardGameGeek API MCP 🎲🤖
 
 [![smithery badge](https://smithery.ai/badge/@kkjdaniel/bgg-mcp)](https://smithery.ai/server/@kkjdaniel/bgg-mcp)
 
