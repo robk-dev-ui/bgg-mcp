@@ -1,11 +1,11 @@
-# BoardGameGeek API MCP 🎲🤖
+# BGG MCP: BoardGameGeek MCP API Server
 
 [![smithery badge](https://smithery.ai/badge/@kkjdaniel/bgg-mcp)](https://smithery.ai/server/@kkjdaniel/bgg-mcp)
 
 > [!WARNING]  
 > This project is under active developmennt, therefore expect tooling to change.
 
-BGG MCP is an MCP (Model Context Protocol) server that enables AI tools like Claude to interact with the BoardGameGeek API (XML API2). The server is implemented in Go, using the [GoGeek](https://github.com/kkjdaniel/gogeek) library, providing more robust API interactions.
+BGG MCP provides access to the BoardGameGeek API through the [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol), enabling retrieval and filtering of board game data, user collections, and profiles. The server is implemented in Go, using the [GoGeek](https://github.com/kkjdaniel/gogeek) library, which helps ensure robust API interactions.
 
 ## Tools
 
