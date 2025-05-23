@@ -11,6 +11,10 @@
 
 BGG MCP provides access to the BoardGameGeek API through the [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol), enabling retrieval and filtering of board game data, user collections, and profiles. The server is implemented in Go, using the [GoGeek](https://github.com/kkjdaniel/gogeek) library, which helps ensure robust API interactions.
 
+## Example
+
+![Example of BGG MCP in action](example.png)
+
 ## Tools
 
 - Game Details _(find game by name, currently returns best match)_
@@ -26,10 +30,6 @@ BGG MCP provides access to the BoardGameGeek API through the [Model Context Prot
 - [x] User Details
 - [ ] Broad Search
 - [ ] Recommended Games
-
-## Example
-
-![Example of BGG MCP in action](example.png)
 
 ## Setup
 
