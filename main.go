@@ -16,8 +16,8 @@ func main() {
 		server.WithRecovery(),
 	)
 
-	searchTool, searchHandler := tools.SearchTool()
-	s.AddTool(searchTool, searchHandler)
+	detailsTool, detailsHandler := tools.DetailsTool()
+	s.AddTool(detailsTool, detailsHandler)
 
 	collectionTool, collectionHandler := tools.CollectionTool()
 	s.AddTool(collectionTool, collectionHandler)

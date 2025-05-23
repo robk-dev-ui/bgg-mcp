@@ -13,15 +13,18 @@ BGG MCP provides access to the BoardGameGeek API through the [Model Context Prot
 
 ## Tools
 
-- Search _(find games by name, currently returns best match)_
+- Game Details _(find game by name, currently returns best match)_
 - Collection _(find and filter about a users collection)_
+- Hottness _(get the current BGG hotness)_
+- User _(find details of a user by username)_
 
 ## Roadmap
 
 - [x] Specific Game Details _(by name)_
 - [x] Collection (+ filters)
-- [ ] Hot Games
-- [ ] User Details
+- [x] Hot Games
+- [x] User Details
+- [ ] Broad Search
 - [ ] Recommended Games
 
 ## Example

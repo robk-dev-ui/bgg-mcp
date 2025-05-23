@@ -10,8 +10,8 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-func SearchTool() (mcp.Tool, server.ToolHandlerFunc) {
-	tool := mcp.NewTool("bgg-search",
+func DetailsTool() (mcp.Tool, server.ToolHandlerFunc) {
+	tool := mcp.NewTool("bgg-details",
 		mcp.WithDescription("Find the details about a specific board game on BoardGameGeek (BGG)"),
 		mcp.WithString("name",
 			mcp.Required(),
