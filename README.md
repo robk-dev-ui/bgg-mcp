@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="bgg-mcp-logo.png" width="250" alt="BGG MCP Logo">
+</p>
+
 # BGG MCP: BoardGameGeek MCP API Server
 
 [![smithery badge](https://smithery.ai/badge/@kkjdaniel/bgg-mcp)](https://smithery.ai/server/@kkjdaniel/bgg-mcp)
