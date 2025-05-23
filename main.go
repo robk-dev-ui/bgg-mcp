@@ -22,6 +22,12 @@ func main() {
 	collectionTool, collectionHandler := tools.CollectionTool()
 	s.AddTool(collectionTool, collectionHandler)
 
+	hotnessTool, hotnessHandler := tools.HotnessTool()
+	s.AddTool(hotnessTool, hotnessHandler)
+
+	userTool, userHandler := tools.UserTool()
+	s.AddTool(userTool, userHandler)
+
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Server error: %v\n", err)
 	}

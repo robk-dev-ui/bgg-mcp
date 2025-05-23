@@ -12,7 +12,7 @@ import (
 
 func SearchTool() (mcp.Tool, server.ToolHandlerFunc) {
 	tool := mcp.NewTool("bgg-search",
-		mcp.WithDescription("Find the details about a specific board game on BGG"),
+		mcp.WithDescription("Find the details about a specific board game on BoardGameGeek (BGG)"),
 		mcp.WithString("name",
 			mcp.Required(),
 			mcp.Description("The name of the board game"),
