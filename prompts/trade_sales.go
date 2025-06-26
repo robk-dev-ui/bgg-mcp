@@ -1,4 +1,4 @@
-package main
+package prompts
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-func registerPrompts(s *server.MCPServer) {
+func RegisterPrompts(s *server.MCPServer) {
 	tradeSalesPrompt := mcp.NewPrompt("trade-sales-post",
 		mcp.WithPromptDescription("Generate a sales post for your BGG 'for trade' collection with discounted prices"),
 		mcp.WithArgument("username",

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/kkjdanie/bgg-mcp/prompts"
 	"github.com/kkjdanie/bgg-mcp/tools"
 	"github.com/mark3labs/mcp-go/server"
 )
@@ -36,7 +37,7 @@ func main() {
 	s.AddTool(priceTool, priceHandler)
 
 	// Register prompts
-	registerPrompts(s)
+	prompts.RegisterPrompts(s)
 
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Server error: %v\n", err)
