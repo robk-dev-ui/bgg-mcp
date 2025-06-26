@@ -20,6 +20,10 @@ func SearchTool() (mcp.Tool, server.ToolHandlerFunc) {
 		mcp.WithNumber("limit",
 			mcp.Description("Maximum number of results to return (default: 30)"),
 		),
+		mcp.WithString("type",
+			mcp.Description("Filter by type (default: all, options: 'boardgame' (aka base game), 'boardgameexpansion', or 'all')"),
+			mcp.Enum("all", "boardgame", "boardgameexpansion"),
+		),
 	)
 
 	handler := func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -31,6 +35,11 @@ func SearchTool() (mcp.Tool, server.ToolHandlerFunc) {
 			limit = int(l)
 		}
 
+		typeFilter := "all"
+		if t, ok := arguments["type"].(string); ok {
+			typeFilter = t
+		}
+
 		result, err := search.Query(query, false)
 		if err != nil {
 			return mcp.NewToolResultText(fmt.Sprintf("Search error: %v", err)), nil
@@ -40,12 +49,26 @@ func SearchTool() (mcp.Tool, server.ToolHandlerFunc) {
 			return mcp.NewToolResultText("No search results found"), nil
 		}
 
-		items := result.Items
-		if len(items) > limit {
-			items = items[:limit]
+		var filteredItems []search.SearchResult
+		if typeFilter == "all" {
+			filteredItems = result.Items
+		} else {
+			for _, item := range result.Items {
+				if item.Type == typeFilter {
+					filteredItems = append(filteredItems, item)
+				}
+			}
 		}
 
-		out, err := json.Marshal(items)
+		if len(filteredItems) == 0 {
+			return mcp.NewToolResultText(fmt.Sprintf("No %s results found", typeFilter)), nil
+		}
+
+		if len(filteredItems) > limit {
+			filteredItems = filteredItems[:limit]
+		}
+
+		out, err := json.Marshal(filteredItems)
 		if err != nil {
 			return mcp.NewToolResultText(fmt.Sprintf("JSON encoding error: %v", err)), nil
 		}

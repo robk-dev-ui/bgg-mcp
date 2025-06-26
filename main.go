@@ -31,6 +31,9 @@ func main() {
 	searchTool, searchHandler := tools.SearchTool()
 	s.AddTool(searchTool, searchHandler)
 
+	priceTool, priceHandler := tools.PriceTool()
+	s.AddTool(priceTool, priceHandler)
+
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Server error: %v\n", err)
 	}

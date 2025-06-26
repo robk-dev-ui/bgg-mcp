@@ -6,9 +6,6 @@
 
 [![smithery badge](https://smithery.ai/badge/@kkjdaniel/bgg-mcp)](https://smithery.ai/server/@kkjdaniel/bgg-mcp)
 
-> [!WARNING]  
-> This project is under active developmennt, therefore expect tooling to change.
-
 BGG MCP provides access to the BoardGameGeek API through the [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol), enabling retrieval and filtering of board game data, user collections, and profiles. The server is implemented in Go, using the [GoGeek](https://github.com/kkjdaniel/gogeek) library, which helps ensure robust API interactions.
 
 <a href="https://boardgamegeek.com/">
@@ -21,19 +18,63 @@ BGG MCP provides access to the BoardGameGeek API through the [Model Context Prot
 
 ## Tools
 
-- Game Details _(find game by name, currently returns best match)_
-- Collection _(find and filter about a users collection)_
-- Hottness _(get the current BGG hotness)_
-- User _(find details of a user by username)_
+- **Search** - Search for board games on BoardGameGeek
+- **Game Details** - Get detailed information about a specific board game
+- **Collection** - Query and filter a user's game collection
+- **Hotness** - Get the current BGG hotness list
+- **User** - Get user profile information
+- **Price** - Get current prices from multiple retailers using BGG IDs
 
-## Roadmap
+## Example Prompts
 
-- [x] Specific Game Details _(by name)_
-- [x] Collection (+ filters)
-- [x] Hot Games
-- [x] User Details
-- [ ] Broad Search
-- [ ] Recommended Games
+Here are some example prompts you can use to interact with the BGG MCP tools:
+
+### 🔍 Search
+
+```
+"Search for Wingspan on BGG"
+"How many expansions does Grand Austria Hotel have?"
+"Search for Wingspan expansions only"
+```
+
+### 📊 Game Details
+
+```
+"Get details for Azul"
+"Show me information about game ID 224517"
+"What's the BGG rating for Gloomhaven?"
+```
+
+### 📚 Collection
+
+```
+"Show me ZeeGarcia's game collection"
+"Show games rated 0+ in kkjdaniel's collection"
+"List unplayed games in rahdo's collection"
+"Find games for 6 players in kkjdaniel's collection"
+```
+
+### 🔥 Hotness
+
+```
+"Show me the current BGG hotness list"
+"What's trending on BGG?"
+```
+
+### 👤 User Profile
+
+```
+"Show me details about BGG user rahdo"
+"When did user ZeeGarcia join BGG?"
+```
+
+### 💰 Prices
+
+```
+"Get the best price for for Wingspan"
+"Show me the best UK price for games Ark Nova"
+"Compare prices for of: Wingspan & Ark Nova"
+```
 
 ## Setup
 
@@ -86,18 +127,3 @@ In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add th
 ```
 
 More details for configuring Claude can be [found here](https://modelcontextprotocol.io/quickstart/user).
-
-## Using Makefile
-
-The project includes a Makefile to simplify building and managing the binary.
-
-```bash
-# Build the application (output goes to build/bgg-mcp)
-make build
-
-# Clean build artifacts
-make clean
-
-# Both clean and build
-make all
-```
