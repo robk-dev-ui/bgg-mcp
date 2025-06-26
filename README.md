@@ -74,9 +74,9 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 ### 💰 Prices
 
 ```
-"Get the best price for for Wingspan"
-"Show me the best UK price for games Ark Nova"
-"Compare prices for of: Wingspan & Ark Nova"
+"Get the best price for Wingspan in GBP"
+"Show me the best UK price for Ark Nova"
+"Compare prices for: Wingspan & Ark Nova"
 ```
 
 ## Setup
