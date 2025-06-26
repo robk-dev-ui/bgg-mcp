@@ -27,3 +27,5 @@ go.work.sum
 
 # Misc
 *.DS_Store
+
+CLAUDE.md
