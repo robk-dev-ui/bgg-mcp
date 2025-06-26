@@ -12,6 +12,7 @@ func main() {
 		"BGG MCP",
 		"1.0.0",
 		server.WithResourceCapabilities(true, true),
+		server.WithPromptCapabilities(true),
 		server.WithLogging(),
 		server.WithRecovery(),
 	)
@@ -33,6 +34,9 @@ func main() {
 
 	priceTool, priceHandler := tools.PriceTool()
 	s.AddTool(priceTool, priceHandler)
+
+	// Register prompts
+	registerPrompts(s)
 
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Server error: %v\n", err)

@@ -28,6 +28,12 @@ BGG MCP provides access to the BoardGameGeek API through the [Model Context Prot
 - **User** - Get user profile information
 - **Price** - Get current prices from multiple retailers using BGG IDs
 
+## Prompts
+
+- **trade-sales-post** - Generate a formatted sales post for your BGG 'for trade' collection with discounted market prices
+
+![Example of trade-sales-post prompt in action](prompt-example.png)
+
 ## Example Prompts
 
 Here are some example prompts you can use to interact with the BGG MCP tools:
