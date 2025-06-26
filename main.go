@@ -28,6 +28,9 @@ func main() {
 	userTool, userHandler := tools.UserTool()
 	s.AddTool(userTool, userHandler)
 
+	searchTool, searchHandler := tools.SearchTool()
+	s.AddTool(searchTool, searchHandler)
+
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Server error: %v\n", err)
 	}
