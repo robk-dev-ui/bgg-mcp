@@ -3,6 +3,7 @@ package tools
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/kkjdaniel/gogeek/search"
@@ -20,17 +21,18 @@ func DetailsTool() (mcp.Tool, server.ToolHandlerFunc) {
 		mcp.WithNumber("id",
 			mcp.Description("The BoardGameGeek ID of the board game"),
 		),
+		mcp.WithBoolean("full_details",
+			mcp.Description("Return the complete BGG API response instead of essential info. WARNING: This returns significantly more data and can overload AI context windows. ONLY set this to true if the user explicitly requests 'full details', 'complete data', or similar. Default behavior returns essential info which is sufficient for most use cases."),
+		),
 	)
 
 	handler := func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		arguments := request.GetArguments()
-		
+
 		var gameID int
 		var err error
-		
-		// Check if ID is provided
+
 		if idVal, ok := arguments["id"]; ok && idVal != nil {
-			// Handle both float64 and string types
 			switch v := idVal.(type) {
 			case float64:
 				gameID = int(v)
@@ -43,7 +45,6 @@ func DetailsTool() (mcp.Tool, server.ToolHandlerFunc) {
 				return mcp.NewToolResultText("Invalid ID type"), nil
 			}
 		} else if nameVal, ok := arguments["name"]; ok && nameVal != nil {
-			// Fall back to name-based search
 			name := nameVal.(string)
 			result, err := search.Query(name, true)
 			if err != nil || len(result.Items) == 0 {
@@ -60,8 +61,24 @@ func DetailsTool() (mcp.Tool, server.ToolHandlerFunc) {
 		}
 
 		if len(things.Items) > 0 {
-			thing := things.Items[0]
-			out, _ := json.Marshal(thing)
+			fullDetails := false
+			if fd, ok := arguments["full_details"].(bool); ok {
+				fullDetails = fd
+			}
+
+			var out []byte
+			var err error
+			
+			if fullDetails {
+				out, err = json.Marshal(things.Items[0])
+			} else {
+				essentialInfo := extractEssentialInfo(things.Items[0])
+				out, err = json.Marshal(essentialInfo)
+			}
+			
+			if err != nil {
+				return mcp.NewToolResultText(fmt.Sprintf("Error formatting results: %v", err)), nil
+			}
 			return mcp.NewToolResultText(string(out)), nil
 		}
 

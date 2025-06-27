@@ -25,9 +25,9 @@ Game recommendations are powered by [Recommend.Games](https://recommend.games/),
 
 ## Tools
 
-- **Search** - Search for board games on BoardGameGeek
+- **Search** - Search for board games on BoardGameGeek with type filtering (base games, expansions, or all)
 - **Game Details** - Get detailed information about a specific board game
-- **Collection** - Query and filter a user's game collection
+- **Collection** - Query and filter a user's game collection with extensive filtering options
 - **Hotness** - Get the current BGG hotness list
 - **User** - Get user profile information
 - **Price** - Get current prices from multiple retailers using BGG IDs

@@ -29,7 +29,6 @@ func RegisterGameRecommendationsPrompt(s *server.MCPServer) {
 			return nil, fmt.Errorf("username is required")
 		}
 
-
 		currency := request.Params.Arguments["currency"]
 		if currency == "" {
 			currency = "USD"
@@ -51,13 +50,13 @@ func RegisterGameRecommendationsPrompt(s *server.MCPServer) {
 
 2. **Generate recommendations**: For each of their top-rated games, use the bgg-recommender tool to get similar game recommendations. Use the game ID for faster results when available.
 
-3. **Curate the list**: From all the recommendations, select the top recommendation from each of their favorite games to create a diverse list of 5-8 total recommendations. Avoid duplicates and games they already own.
+3. **Curate the list**: Consolidate the recommendations and present a final list, randomly picking a few games from each category to ensure variety in genres and mechanics.
 
 4. **Get pricing**: For each final recommendation, use the bgg-price tool to get current prices in %s currency for %s destination
 
 5. **Format the response** as shown below:
 
-## 🎲 Personalized Game Recommendations
+## 🎲 Your Game Recommendations
 
 Based on your love of [list 2-3 of their top games], here are my recommendations:
 
@@ -65,7 +64,7 @@ Based on your love of [list 2-3 of their top games], here are my recommendations
 *Perfect for fans of economic strategy - build industries and rail networks in Industrial Revolution England*
 - **Mechanisms**: Network building, Hand management, Economic
 - **Complexity**: 3.9/5
-- **Best Price**: $67.99 at [Store Name](link)
+- **Best Price**: [$67.99](link)
 
 [Continue for each recommendation...]
 

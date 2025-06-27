@@ -103,7 +103,8 @@ func RecommenderTool() (mcp.Tool, server.ToolHandlerFunc) {
 			return mcp.NewToolResultText(fmt.Sprintf("Error fetching game details: %v", err)), nil
 		}
 
-		out, err := json.Marshal(gameDetails)
+		essentialInfo := extractEssentialInfoList(gameDetails.Items)
+		out, err := json.Marshal(essentialInfo)
 		if err != nil {
 			return mcp.NewToolResultText(fmt.Sprintf("Error formatting results: %v", err)), nil
 		}
