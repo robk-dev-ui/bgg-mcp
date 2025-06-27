@@ -62,4 +62,6 @@ Format it nicely for posting in a Facebook hobby group.`, username, currency, de
 	}
 
 	s.AddPrompt(tradeSalesPrompt, tradeSalesHandler)
+
+	RegisterGameRecommendationsPrompt(s)
 }

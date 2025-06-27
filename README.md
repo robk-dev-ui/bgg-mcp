@@ -13,6 +13,8 @@ BGG MCP provides access to the BoardGameGeek API through the [Model Context Prot
 
 Price data is provided by [BoardGamePrices.co.uk](https://boardgameprices.co.uk), offering real-time pricing from multiple retailers.
 
+Game recommendations are powered by [Recommend.Games](https://recommend.games/), which provides algorithmic similarity recommendations based on BoardGameGeek data.
+
 <a href="https://boardgamegeek.com/">
   <img src="powered-bgg.webp" width="160" alt="Powered by BGG">
 </a>
@@ -30,10 +32,12 @@ Price data is provided by [BoardGamePrices.co.uk](https://boardgameprices.co.uk)
 - **User** - Get user profile information
 - **Price** - Get current prices from multiple retailers using BGG IDs
 - **Trade Finder** - Find trading opportunities between two BGG users
+- **Recommender** - Get game recommendations based on similarity to a specific game
 
 ## Prompts
 
 - **trade-sales-post** - Generate a formatted sales post for your BGG 'for trade' collection with discounted market prices
+- **game-recommendations** - Get personalized game recommendations based on your BGG collection and preferences
 
 ![Example of trade-sales-post prompt in action](prompt-example.png)
 
@@ -90,6 +94,14 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 "Get the best price for Wingspan in GBP"
 "Show me the best UK price for Ark Nova"
 "Compare prices for: Wingspan & Ark Nova"
+```
+
+### 🎯 Recommendations
+
+```
+"Recommend games similar to Wingspan"
+"What games are like Azul but with at least 1000 ratings?"
+"Find 5 games similar to Troyes"
 ```
 
 ## Setup

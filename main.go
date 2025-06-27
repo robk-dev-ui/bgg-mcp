@@ -39,6 +39,9 @@ func main() {
 	tradeFinderTool, tradeFinderHandler := tools.TradeFinderTool()
 	s.AddTool(tradeFinderTool, tradeFinderHandler)
 
+	recommenderTool, recommenderHandler := tools.RecommenderTool()
+	s.AddTool(recommenderTool, recommenderHandler)
+
 	// Register prompts
 	prompts.RegisterPrompts(s)
 

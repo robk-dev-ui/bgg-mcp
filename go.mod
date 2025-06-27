@@ -10,7 +10,6 @@ require (
 require (
 	github.com/benbjohnson/clock v1.3.0 // indirect
 	github.com/clbanning/mxj v1.8.4 // indirect
-	github.com/fbiville/markdown-table-formatter v0.3.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/spf13/cast v1.7.1 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
