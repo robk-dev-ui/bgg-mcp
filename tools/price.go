@@ -46,7 +46,6 @@ func PriceTool() (mcp.Tool, server.ToolHandlerFunc) {
 			destination = strings.ToUpper(d)
 		}
 
-		// Call the BoardGamePrices API
 		baseURL := "https://boardgameprices.co.uk/api/info"
 		params := url.Values{}
 		params.Add("eid", ids)
@@ -65,14 +64,12 @@ func PriceTool() (mcp.Tool, server.ToolHandlerFunc) {
 			return mcp.NewToolResultText(fmt.Sprintf("Error reading response: %v", err)), nil
 		}
 
-		// Parse and format the response
 		var result interface{}
 		if err := json.Unmarshal(body, &result); err != nil {
 			return mcp.NewToolResultText(fmt.Sprintf("JSON parsing error: %v", err)), nil
 		}
 
-		// Pretty print the JSON response
-		out, err := json.MarshalIndent(result, "", "  ")
+		out, err := json.Marshal(result)
 		if err != nil {
 			return mcp.NewToolResultText(fmt.Sprintf("JSON encoding error: %v", err)), nil
 		}

@@ -3,6 +3,8 @@ package tools
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"os"
 
 	"github.com/kkjdaniel/gogeek/collection"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -14,17 +16,17 @@ func CollectionTool() (mcp.Tool, server.ToolHandlerFunc) {
 		mcp.WithDescription("Find the details about a specific users board game collection on BoardGameGeek (BGG)"),
 		mcp.WithString("username",
 			mcp.Required(),
-			mcp.Description("The username of the BoardGameGeek (BGG) user who owns the collection"),
+			mcp.Description("The username of the BoardGameGeek (BGG) user who owns the collection. When the user refers to themselves (me, my, I), use 'SELF' as the value."),
 		),
 		mcp.WithString("subtype",
 			mcp.Enum("boardgame", "boardgameexpansion"),
 			mcp.Description("Whether to search for base games or expansions"),
 		),
 		mcp.WithBoolean("owned",
-			mcp.Description("Filters for owned games in the collection"),
+			mcp.Description("Filters for owned games in the collection (default: true if no ownership filters specified)"),
 		),
 		mcp.WithBoolean("wishlist",
-			mcp.Description("Filterds for wishlisted games in the collection"),
+			mcp.Description("Filters for wishlisted games in the collection"),
 		),
 		mcp.WithBoolean("preordered",
 			mcp.Description("Filters for preordered games in the collection"),
@@ -67,105 +69,104 @@ func CollectionTool() (mcp.Tool, server.ToolHandlerFunc) {
 		),
 	)
 
-	var handler server.ToolHandlerFunc
-	handler = func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	handler := func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		arguments := request.GetArguments()
-		username := arguments["username"].(string)
-		subtype := arguments["subtype"]
 
-		owned := arguments["owned"]
-		wishlist := arguments["wishlist"]
-		preordered := arguments["preordered"]
-		fortrade := arguments["fortrade"]
-		rated := arguments["rated"]
-		wanttoplay := arguments["wanttoplay"]
-		played := arguments["played"]
-		wanttobuy := arguments["wanttobuy"]
-		hasparts := arguments["hasparts"]
+		username, ok := arguments["username"].(string)
+		if !ok || username == "" {
+			return mcp.NewToolResultText("Username is required"), nil
+		}
 
-		minrating := arguments["minrating"]
-		maxrating := arguments["maxrating"]
-		minbggrating := arguments["minbggrating"]
-		maxbggrating := arguments["maxbggrating"]
-		minplays := arguments["minplays"]
-		maxplays := arguments["maxplays"]
-
-		var options []collection.CollectionOption
-
-		if subtype != nil {
-			switch subtype.(string) {
-			case "boardgame":
-				options = append(options, collection.WithSubtype("boardgame"))
-			case "boardgameexpansion":
-				options = append(options, collection.WithSubtype("boardgameexpansion"))
+		// Handle SELF reference
+		if username == "SELF" {
+			envUsername := os.Getenv("BGG_USERNAME")
+			if envUsername == "" {
+				return mcp.NewToolResultText("BGG_USERNAME environment variable not set. Either set it or provide your specific username instead of 'SELF'."), nil
 			}
+			username = envUsername
 		}
 
-		if owned != nil {
-			options = append(options, collection.WithOwned(owned.(bool)))
-		}
-		if wishlist != nil {
-			options = append(options, collection.WithWishlist(wishlist.(bool)))
-		}
-		if preordered != nil {
-			options = append(options, collection.WithPreordered(preordered.(bool)))
-		}
-		if fortrade != nil {
-			options = append(options, collection.WithTrade(fortrade.(bool)))
-		}
-		if rated != nil {
-			options = append(options, collection.WithRated(rated.(bool)))
-		}
-		if wanttoplay != nil {
-			options = append(options, collection.WithWantToPlay(wanttoplay.(bool)))
-		}
-		if played != nil {
-			options = append(options, collection.WithPlayed(played.(bool)))
-		}
-		if wanttobuy != nil {
-			options = append(options, collection.WithWantToBuy(wanttobuy.(bool)))
-		}
-		if hasparts != nil {
-			options = append(options, collection.WithHasParts(hasparts.(bool)))
-		}
 
-		if minrating != nil {
-			options = append(options, collection.WithMinRating(minrating.(float64)))
-		}
-		if maxrating != nil {
-			options = append(options, collection.WithMaxRating(maxrating.(float64)))
-		}
-		if minbggrating != nil {
-			options = append(options, collection.WithMinBGGRating(minbggrating.(float64)))
-		}
-		if maxbggrating != nil {
-			options = append(options, collection.WithMaxBGGRating(maxbggrating.(float64)))
-		}
-		if minplays != nil {
-			var minPlaysValue int
-			if floatVal, ok := minplays.(float64); ok {
-				minPlaysValue = int(floatVal)
-				options = append(options, collection.WithMinPlays(minPlaysValue))
-			}
-		}
-		if maxplays != nil {
-			var maxPlaysValue int
-			if floatVal, ok := maxplays.(float64); ok {
-				maxPlaysValue = int(floatVal)
-				options = append(options, collection.WithMaxPlays(maxPlaysValue))
-			}
-		}
+		options := buildCollectionOptions(arguments)
 
 		result, err := collection.Query(username, options...)
-
-		if err != nil || len(result.Items) == 0 {
-			return mcp.NewToolResultText("No search result found"), nil
+		if err != nil {
+			return mcp.NewToolResultText(fmt.Sprintf("Error fetching collection: %v", err)), nil
 		}
 
-		items := result.Items
-		out, _ := json.Marshal(items)
+		if len(result.Items) == 0 {
+			return mcp.NewToolResultText("No items found in collection with the specified filters"), nil
+		}
+
+		out, err := json.Marshal(result.Items)
+		if err != nil {
+			return mcp.NewToolResultText(fmt.Sprintf("Error formatting results: %v", err)), nil
+		}
+
 		return mcp.NewToolResultText(string(out)), nil
 	}
 
 	return tool, handler
+}
+
+func buildCollectionOptions(arguments map[string]interface{}) []collection.CollectionOption {
+	var options []collection.CollectionOption
+
+	ownershipFilters := []string{"owned", "wishlist", "preordered", "fortrade", "wanttoplay", "wanttobuy"}
+	hasOwnershipFilter := false
+	for _, filter := range ownershipFilters {
+		if arguments[filter] != nil {
+			hasOwnershipFilter = true
+			break
+		}
+	}
+
+	if !hasOwnershipFilter {
+		options = append(options, collection.WithOwned(true))
+	}
+
+	if subtype, ok := arguments["subtype"].(string); ok {
+		options = append(options, collection.WithSubtype(subtype))
+	}
+
+	booleanFilters := map[string]func(bool) collection.CollectionOption{
+		"owned":      collection.WithOwned,
+		"wishlist":   collection.WithWishlist,
+		"preordered": collection.WithPreordered,
+		"fortrade":   collection.WithTrade,
+		"rated":      collection.WithRated,
+		"wanttoplay": collection.WithWantToPlay,
+		"played":     collection.WithPlayed,
+		"wanttobuy":  collection.WithWantToBuy,
+		"hasparts":   collection.WithHasParts,
+	}
+
+	for key, fn := range booleanFilters {
+		if val, ok := arguments[key].(bool); ok {
+			options = append(options, fn(val))
+		}
+	}
+
+	numericFilters := map[string]func(float64) collection.CollectionOption{
+		"minrating":    collection.WithMinRating,
+		"maxrating":    collection.WithMaxRating,
+		"minbggrating": collection.WithMinBGGRating,
+		"maxbggrating": collection.WithMaxBGGRating,
+	}
+
+	for key, fn := range numericFilters {
+		if val, ok := arguments[key].(float64); ok {
+			options = append(options, fn(val))
+		}
+	}
+
+	if minplays, ok := arguments["minplays"].(float64); ok {
+		options = append(options, collection.WithMinPlays(int(minplays)))
+	}
+
+	if maxplays, ok := arguments["maxplays"].(float64); ok {
+		options = append(options, collection.WithMaxPlays(int(maxplays)))
+	}
+
+	return options
 }

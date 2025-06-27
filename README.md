@@ -29,6 +29,7 @@ Price data is provided by [BoardGamePrices.co.uk](https://boardgameprices.co.uk)
 - **Hotness** - Get the current BGG hotness list
 - **User** - Get user profile information
 - **Price** - Get current prices from multiple retailers using BGG IDs
+- **Trade Finder** - Find trading opportunities between two BGG users
 
 ## Prompts
 
@@ -63,6 +64,9 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 "Show games rated 0+ in kkjdaniel's collection"
 "List unplayed games in rahdo's collection"
 "Find games for 6 players in kkjdaniel's collection"
+"Show me all the games rate 3 and below in my collection"
+"What games in my collection does rahdo want?"
+"What games does kkjdaniel have that I want?"
 ```
 
 ### 🔥 Hotness
@@ -77,6 +81,7 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 ```
 "Show me details about BGG user rahdo"
 "When did user ZeeGarcia join BGG?"
+"How many buddies do I have on bgg?"
 ```
 
 ### 💰 Prices
@@ -138,3 +143,27 @@ In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add th
 ```
 
 More details for configuring Claude can be [found here](https://modelcontextprotocol.io/quickstart/user).
+
+## Optional Configuration
+
+### Username Configuration (Optional)
+
+You can optionally set the `BGG_USERNAME` environment variable to enable "me" and "my" references in queries:
+
+```json
+"bgg": {
+    "command": "path/to/build/bgg-mcp",
+    "args": [],
+    "env": {
+        "BGG_USERNAME": "your_bgg_username"
+    }
+}
+```
+
+This enables:
+
+- **Collection queries**: "Show me my collection" instead of specifying your username
+- **User queries**: "Show me my BGG profile"
+- **AI assistance**: The AI can automatically use your username for comparisons and analysis
+
+**Note**: When you use self-references (me, my, I) without setting BGG_USERNAME, you'll get a clear error message.

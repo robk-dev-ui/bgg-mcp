@@ -36,6 +36,9 @@ func main() {
 	priceTool, priceHandler := tools.PriceTool()
 	s.AddTool(priceTool, priceHandler)
 
+	tradeFinderTool, tradeFinderHandler := tools.TradeFinderTool()
+	s.AddTool(tradeFinderTool, tradeFinderHandler)
+
 	// Register prompts
 	prompts.RegisterPrompts(s)
 
