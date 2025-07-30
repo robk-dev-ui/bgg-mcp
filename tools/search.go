@@ -87,7 +87,6 @@ func searchAndSortGames(query, typeFilter string, limit int) (*thing.Items, erro
 
 	queryLower := strings.ToLower(strings.TrimSpace(query))
 
-	// Try exact matches first
 	var exactMatches []search.SearchResult
 	for _, item := range filteredItems {
 		if strings.ToLower(item.Name.Value) == queryLower {
@@ -98,7 +97,6 @@ func searchAndSortGames(query, typeFilter string, limit int) (*thing.Items, erro
 	if len(exactMatches) > 0 {
 		filteredItems = exactMatches
 	} else {
-		// No exact matches, prioritize base games over expansions
 		var baseGames, expansions []search.SearchResult
 		delimiters := []string{":", " – ", " - ", " — ", " (", " ["}
 
@@ -106,7 +104,6 @@ func searchAndSortGames(query, typeFilter string, limit int) (*thing.Items, erro
 			nameLower := strings.ToLower(item.Name.Value)
 			firstPart := nameLower
 
-			// Find the shortest prefix before any delimiter
 			for _, delimiter := range delimiters {
 				if index := strings.Index(nameLower, delimiter); index > 0 {
 					if candidate := strings.TrimSpace(nameLower[:index]); len(candidate) < len(firstPart) {

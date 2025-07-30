@@ -23,7 +23,6 @@ func UserTool() (mcp.Tool, server.ToolHandlerFunc) {
 		arguments := request.GetArguments()
 		name := arguments["username"].(string)
 
-		// Handle SELF reference
 		if name == "SELF" {
 			envUsername := os.Getenv("BGG_USERNAME")
 			if envUsername == "" {

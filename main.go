@@ -42,7 +42,6 @@ func main() {
 	recommenderTool, recommenderHandler := tools.RecommenderTool()
 	s.AddTool(recommenderTool, recommenderHandler)
 
-	// Register prompts
 	prompts.RegisterPrompts(s)
 
 	if err := server.ServeStdio(s); err != nil {

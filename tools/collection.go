@@ -20,7 +20,7 @@ func CollectionTool() (mcp.Tool, server.ToolHandlerFunc) {
 		),
 		mcp.WithString("subtype",
 			mcp.Enum("boardgame", "boardgameexpansion"),
-			mcp.Description("Whether to search for base games or expansions"),
+			mcp.Description("Filter by game type: 'boardgame' for base games only (excludes expansions), 'boardgameexpansion' for expansions only"),
 		),
 		mcp.WithBoolean("owned",
 			mcp.Description("Filters for owned games in the collection (default: true if no ownership filters specified)"),
@@ -77,7 +77,6 @@ func CollectionTool() (mcp.Tool, server.ToolHandlerFunc) {
 			return mcp.NewToolResultText("Username is required"), nil
 		}
 
-		// Handle SELF reference
 		if username == "SELF" {
 			envUsername := os.Getenv("BGG_USERNAME")
 			if envUsername == "" {
@@ -85,7 +84,6 @@ func CollectionTool() (mcp.Tool, server.ToolHandlerFunc) {
 			}
 			username = envUsername
 		}
-
 
 		options := buildCollectionOptions(arguments)
 
@@ -126,7 +124,12 @@ func buildCollectionOptions(arguments map[string]interface{}) []collection.Colle
 	}
 
 	if subtype, ok := arguments["subtype"].(string); ok {
-		options = append(options, collection.WithSubtype(subtype))
+		if subtype == "boardgame" {
+			options = append(options, collection.WithSubtype("boardgame"))
+			options = append(options, collection.WithExcludeSubtype("boardgameexpansion"))
+		} else {
+			options = append(options, collection.WithSubtype(subtype))
+		}
 	}
 
 	booleanFilters := map[string]func(bool) collection.CollectionOption{

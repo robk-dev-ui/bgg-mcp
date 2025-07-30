@@ -62,7 +62,6 @@ func TradeFinderTool() (mcp.Tool, server.ToolHandlerFunc) {
 			return mcp.NewToolResultText("user1 is required"), nil
 		}
 
-		// Handle SELF reference for user1
 		if user1 == "SELF" {
 			envUsername := os.Getenv("BGG_USERNAME")
 			if envUsername == "" {
@@ -76,7 +75,6 @@ func TradeFinderTool() (mcp.Tool, server.ToolHandlerFunc) {
 			return mcp.NewToolResultText("user2 is required"), nil
 		}
 
-		// Handle SELF reference for user2
 		if user2 == "SELF" {
 			envUsername := os.Getenv("BGG_USERNAME")
 			if envUsername == "" {
@@ -85,20 +83,16 @@ func TradeFinderTool() (mcp.Tool, server.ToolHandlerFunc) {
 			user2 = envUsername
 		}
 
-
-		// Get user1's collection
 		user1Collection, err := collection.Query(user1, collection.WithOwned(true))
 		if err != nil {
 			return mcp.NewToolResultText(fmt.Sprintf("Error fetching %s's collection: %v", user1, err)), nil
 		}
 
-		// Get user2's wishlist
 		user2Wishlist, err := collection.Query(user2, collection.WithWishlist(true))
 		if err != nil {
 			return mcp.NewToolResultText(fmt.Sprintf("Error fetching %s's wishlist: %v", user2, err)), nil
 		}
 
-		// Analyse trade opportunities
 		tradeAnalysis := analyseTradeOpportunities(user1, user2, user1Collection, user2Wishlist)
 
 		out, err := json.Marshal(tradeAnalysis)
