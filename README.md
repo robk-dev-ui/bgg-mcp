@@ -4,6 +4,7 @@
 
 # BGG MCP: BoardGameGeek MCP API Server
 
+[![Trust Score](https://archestra.ai/mcp-catalog/api/badge/quality/kkjdaniel/bgg-mcp)](https://archestra.ai/mcp-catalog/kkjdaniel__bgg-mcp)
 [![smithery badge](https://smithery.ai/badge/@kkjdaniel/bgg-mcp)](https://smithery.ai/server/@kkjdaniel/bgg-mcp)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/kkjdaniel/bgg-mcp)](https://go.dev/)
 [![License](https://img.shields.io/github/license/kkjdaniel/bgg-mcp)](LICENSE)
