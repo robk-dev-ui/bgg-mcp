@@ -62,12 +62,10 @@ func main() {
 	flag.StringVar(&port, "port", "8080", "Port for HTTP server (only used in http mode)")
 	flag.Parse()
 
-	// Override mode from environment variable if set
 	if envMode := os.Getenv("MCP_MODE"); envMode != "" {
 		mode = envMode
 	}
 	
-	// Override port from environment variable if set
 	if envPort := os.Getenv("MCP_PORT"); envPort != "" {
 		port = envPort
 	}
@@ -91,14 +89,11 @@ func runStdioServer(mcpServer *server.MCPServer) {
 }
 
 func runHTTPServer(mcpServer *server.MCPServer, port string) {
-	// Get base URL from environment or use default
 	baseURL := os.Getenv("MCP_BASE_URL")
 	if baseURL == "" {
-		// Default to localhost for local development
 		baseURL = fmt.Sprintf("http://localhost:%s", port)
 	}
 	
-	// Create SSE server for HTTP transport
 	sseServer := server.NewSSEServer(mcpServer,
 		server.WithBaseURL(baseURL),
 		server.WithStaticBasePath("/mcp"),
@@ -106,7 +101,6 @@ func runHTTPServer(mcpServer *server.MCPServer, port string) {
 		server.WithKeepAliveInterval(30*time.Second),
 	)
 
-	// Handle shutdown signals
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
 
@@ -114,7 +108,6 @@ func runHTTPServer(mcpServer *server.MCPServer, port string) {
 		<-sigChan
 		log.Println("Shutting down HTTP server...")
 		
-		// Give the server time to shutdown gracefully
 		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer shutdownCancel()
 		
@@ -123,7 +116,6 @@ func runHTTPServer(mcpServer *server.MCPServer, port string) {
 		}
 	}()
 
-	// Start the HTTP server
 	log.Printf("Starting HTTP server on port %s", port)
 	log.Printf("SSE endpoint: %s/mcp/sse", baseURL)
 	log.Printf("Message endpoint: %s/mcp/message", baseURL)

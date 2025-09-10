@@ -112,7 +112,15 @@ You have two options for setting up, the easiest is to use the integration of Sm
 
 ### A) Installing via Smithery (Easiest)
 
-The simplest way to get started is to use [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp), simply signup, select your client (e.g Claude Desktop) and follow the quick installation instructions.
+The simplest way to get started is via [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp), simply signup, select your client (e.g Claude Desktop) and follow the quick installation instructions.
+
+The server supports SSE, which is hosted via Smithery - so you can simply add this URL to your client:
+
+```
+https://server.smithery.ai/@kkjdaniel/bgg-mcp/mcp
+```
+
+For example in Claude Desktop just add the URL above under `Settings > Connectors > Add custom connector` - then connect to authorise it with Claude and Smithery.
 
 ### B) Manual Setup
 
