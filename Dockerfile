@@ -21,5 +21,14 @@ WORKDIR /app
 COPY --from=builder /app/bgg-mcp /usr/local/bin/bgg-mcp
 # Set executable permissions
 RUN chmod +x /usr/local/bin/bgg-mcp
-# Default command
+
+# Expose HTTP port for SSE server
+EXPOSE 8080
+
+# Set environment variables for HTTP mode
+ENV MCP_MODE=http
+ENV MCP_PORT=8080
+# MCP_BASE_URL will be set by Smithery at runtime with the proper HTTPS URL
+
+# Default command - runs in HTTP mode
 ENTRYPOINT ["/usr/local/bin/bgg-mcp"]

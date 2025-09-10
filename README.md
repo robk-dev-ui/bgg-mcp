@@ -150,9 +150,30 @@ In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add th
 ```json
 "bgg": {
     "command": "path/to/build/bgg-mcp",
-    "args": []
+    "args": ["-mode", "stdio"]
 }
 ```
+
+#### HTTP Mode (For Deployment)
+
+The server also supports HTTP mode using SSE (Server-Sent Events) transport for scalable deployments:
+
+```bash
+# Run with default port 8080
+./bgg-mcp -mode http
+
+# Run with custom port
+./bgg-mcp -mode http -port 3000
+
+# Or use environment variables
+MCP_MODE=http MCP_PORT=3000 ./bgg-mcp
+```
+
+When running in HTTP mode:
+- SSE endpoint: `http://localhost:8080/mcp/sse`
+- Message endpoint: `http://localhost:8080/mcp/message`
+
+The Docker container runs in HTTP mode by default on port 8080.
 
 More details for configuring Claude can be [found here](https://modelcontextprotocol.io/quickstart/user).
 
