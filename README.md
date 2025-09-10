@@ -1,14 +1,15 @@
 <p align="center">
-  <img src="bgg-mcp-logo.png" width="250" alt="BGG MCP Logo">
+  <img src="bgg-mcp-logo.png" width="200" alt="BGG MCP Logo">
 </p>
+<h1 align="center">BGG MCP: BoardGameGeek MCP API Server</h1>
 
-# BGG MCP: BoardGameGeek MCP API Server
-
-[![Trust Score](https://archestra.ai/mcp-catalog/api/badge/quality/kkjdaniel/bgg-mcp)](https://archestra.ai/mcp-catalog/kkjdaniel__bgg-mcp)
-[![smithery badge](https://smithery.ai/badge/@kkjdaniel/bgg-mcp)](https://smithery.ai/server/@kkjdaniel/bgg-mcp)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/kkjdaniel/bgg-mcp)](https://go.dev/)
-[![License](https://img.shields.io/github/license/kkjdaniel/bgg-mcp)](LICENSE)
-[![MCP Protocol](https://img.shields.io/badge/MCP-Protocol-blue)](https://modelcontextprotocol.io)
+<p align="center">
+  <a href="https://smithery.ai/server/@kkjdaniel/bgg-mcp"><img src="https://smithery.ai/badge/@kkjdaniel/bgg-mcp" alt="smithery badge"></a>
+  <a href="https://archestra.ai/mcp-catalog/kkjdaniel__bgg-mcp"><img src="https://archestra.ai/mcp-catalog/api/badge/quality/kkjdaniel/bgg-mcp" alt="trust score badge"></a>
+  <a href="https://go.dev/"><img src="https://img.shields.io/github/go-mod/go-version/kkjdaniel/bgg-mcp" alt="Go Version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/kkjdaniel/bgg-mcp" alt="License"></a>
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-Protocol-blue" alt="MCP Protocol"></a>
+</p>
 
 BGG MCP provides access to the BoardGameGeek API through the [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol), enabling retrieval and filtering of board game data, user collections, and profiles. The server is implemented in Go, using the [GoGeek](https://github.com/kkjdaniel/gogeek) library, which helps ensure robust API interactions.
 
@@ -109,13 +110,9 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 
 You have two options for setting up, the easiest is to use the integration of Smithery.
 
-### A) Installing via Smithery
+### A) Installing via Smithery (Easiest)
 
-To install bgg-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp):
-
-```bash
-npx -y @smithery/cli install @kkjdaniel/bgg-mcp --client claude
-```
+The simplest way to get started is to use [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp), simply signup, select your client (e.g Claude Desktop) and follow the quick installation instructions.
 
 ### B) Manual Setup
 
@@ -155,9 +152,11 @@ In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add th
 }
 ```
 
+More details for configuring Claude can be [found here](https://modelcontextprotocol.io/quickstart/user).
+
 #### HTTP Mode (For Deployment)
 
-The server also supports HTTP mode using SSE (Server-Sent Events) transport for scalable deployments:
+The server also supports HTTP mode using SSE (Server-Sent Events) transport for deployments:
 
 ```bash
 # Run with default port 8080
@@ -171,12 +170,11 @@ MCP_MODE=http MCP_PORT=3000 ./bgg-mcp
 ```
 
 When running in HTTP mode:
+
 - SSE endpoint: `http://localhost:8080/mcp/sse`
 - Message endpoint: `http://localhost:8080/mcp/message`
 
 The Docker container runs in HTTP mode by default on port 8080.
-
-More details for configuring Claude can be [found here](https://modelcontextprotocol.io/quickstart/user).
 
 ## Optional Configuration
 
