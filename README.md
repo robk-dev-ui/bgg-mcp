@@ -120,7 +120,7 @@ The server supports SSE, which is hosted via Smithery - so you can simply add th
 https://server.smithery.ai/@kkjdaniel/bgg-mcp/mcp
 ```
 
-For example in Claude Desktop just add the URL above under `Settings > Connectors > Add custom connector` - then connect to authorise it with Claude and Smithery.
+For example in Claude Desktop just add the URL above under `Settings > Connectors > Add custom connector` - then select `Connect` to authorise it.
 
 ### B) Manual Setup
 
