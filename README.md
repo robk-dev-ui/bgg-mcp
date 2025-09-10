@@ -112,15 +112,24 @@ You have two options for setting up, the easiest is to use the integration of Sm
 
 ### A) Installing via Smithery (Easiest)
 
-The simplest way to get started is via [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp), simply signup, select your client (e.g Claude Desktop) and follow the quick installation instructions.
+Get started in under a minute with [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp):
 
-The server supports SSE, which is hosted via Smithery - so you can simply add this URL to your client:
+1. **Sign up** at Smithery and select your client (e.g., Claude Desktop)
+2. **Follow the quick setup** - Smithery handles all configuration automatically
+3. **Start using BGG tools** immediately - no manual setup required
 
-```
-https://server.smithery.ai/@kkjdaniel/bgg-mcp/mcp
-```
+#### For Claude Desktop Users
 
-For example in Claude Desktop just add the URL above under `Settings > Connectors > Add custom connector` - then select `Connect` to authorise it.
+Add BGG MCP as a custom connector:
+
+1. Go to **Settings → Connectors → Add custom connector**
+2. Enter this URL:
+   ```
+   https://server.smithery.ai/@kkjdaniel/bgg-mcp/mcp
+   ```
+3. Click **Connect** to authorise
+
+That's it! The server uses the latest Streamable HTTP transport.
 
 ### B) Manual Setup
 
@@ -164,7 +173,7 @@ More details for configuring Claude can be [found here](https://modelcontextprot
 
 #### HTTP Mode (For Deployment)
 
-The server also supports HTTP mode using SSE (Server-Sent Events) transport for deployments:
+The server supports HTTP mode using Streamable HTTP transport for scalable deployments:
 
 ```bash
 # Run with default port 8080
@@ -179,8 +188,9 @@ MCP_MODE=http MCP_PORT=3000 ./bgg-mcp
 
 When running in HTTP mode:
 
-- SSE endpoint: `http://localhost:8080/mcp/sse`
-- Message endpoint: `http://localhost:8080/mcp/message`
+- Single endpoint: `http://localhost:8080/mcp`
+- Supports stateless connections for better scalability
+- Automatic HTTPS when deployed via Smithery
 
 The Docker container runs in HTTP mode by default on port 8080.
 

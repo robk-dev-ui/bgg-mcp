@@ -94,11 +94,10 @@ func runHTTPServer(mcpServer *server.MCPServer, port string) {
 		baseURL = fmt.Sprintf("http://localhost:%s", port)
 	}
 	
-	sseServer := server.NewSSEServer(mcpServer,
-		server.WithBaseURL(baseURL),
-		server.WithStaticBasePath("/mcp"),
-		server.WithKeepAlive(true),
-		server.WithKeepAliveInterval(30*time.Second),
+	httpServer := server.NewStreamableHTTPServer(mcpServer,
+		server.WithEndpointPath("/mcp"),
+		server.WithStateLess(true),
+		server.WithHeartbeatInterval(30*time.Second),
 	)
 
 	sigChan := make(chan os.Signal, 1)
@@ -111,16 +110,15 @@ func runHTTPServer(mcpServer *server.MCPServer, port string) {
 		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer shutdownCancel()
 		
-		if err := sseServer.Shutdown(shutdownCtx); err != nil {
+		if err := httpServer.Shutdown(shutdownCtx); err != nil {
 			log.Printf("Error during shutdown: %v", err)
 		}
 	}()
 
 	log.Printf("Starting HTTP server on port %s", port)
-	log.Printf("SSE endpoint: %s/mcp/sse", baseURL)
-	log.Printf("Message endpoint: %s/mcp/message", baseURL)
+	log.Printf("HTTP endpoint: %s/mcp", baseURL)
 	
-	if err := sseServer.Start(":" + port); err != nil {
+	if err := httpServer.Start(":" + port); err != nil {
 		log.Fatalf("HTTP server error: %v", err)
 	}
 }
