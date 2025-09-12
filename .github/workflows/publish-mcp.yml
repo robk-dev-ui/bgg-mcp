@@ -3,11 +3,11 @@ name: Publish to MCP Registry
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to publish (e.g., 1.0.1)'
+        description: "Version to publish (e.g., 1.0.1)"
         required: true
         type: string
 
@@ -21,7 +21,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write  # Required for OIDC authentication
+      id-token: write # Required for OIDC authentication
 
     steps:
       - name: Checkout repository
@@ -30,7 +30,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: "1.23"
           cache: true
 
       - name: Build and verify
@@ -80,19 +80,16 @@ jobs:
           chmod +x validate_server.sh
           ./validate_server.sh
 
-      - name: Install MCP Publisher CLI
+      - name: Install MCP Publisher
         run: |
           curl -L "https://github.com/modelcontextprotocol/registry/releases/download/v1.0.0/mcp-publisher_1.0.0_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
-          sudo mv mcp-publisher /usr/local/bin/
-          mcp-publisher --version
+
+      - name: Login to MCP Registry
+        run: ./mcp-publisher login github-oidc
 
       - name: Publish to MCP Registry
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mcp-publisher login github --non-interactive
-          mcp-publisher publish --non-interactive
-          
+          ./mcp-publisher publish
           echo "✓ Successfully published to MCP Registry"
           echo "✓ Docker image published to: ghcr.io/kkjdaniel/bgg-mcp:${{ steps.meta.outputs.version }}"
           echo ""
