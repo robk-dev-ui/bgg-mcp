@@ -72,7 +72,8 @@ jobs:
           if [ -z "$VERSION" ]; then
             VERSION="${{ github.event.inputs.version }}"
           fi
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"$VERSION\"/" server.json
+          jq --arg version "$VERSION" '.version = $version' server.json > server.json.tmp
+          mv server.json.tmp server.json
           echo "Updated server.json to version $VERSION"
 
       - name: Validate server.json
