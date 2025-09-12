@@ -18,7 +18,7 @@ import (
 func createMCPServer() *server.MCPServer {
 	s := server.NewMCPServer(
 		"BGG MCP",
-		"1.2.0",
+		"1.3.0",
 		server.WithResourceCapabilities(true, true),
 		server.WithPromptCapabilities(true),
 		server.WithLogging(),

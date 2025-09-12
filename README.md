@@ -6,6 +6,7 @@
 <p align="center">
   <a href="https://smithery.ai/server/@kkjdaniel/bgg-mcp"><img src="https://smithery.ai/badge/@kkjdaniel/bgg-mcp" alt="smithery badge"></a>
   <a href="https://archestra.ai/mcp-catalog/kkjdaniel__bgg-mcp"><img src="https://archestra.ai/mcp-catalog/api/badge/quality/kkjdaniel/bgg-mcp" alt="trust score badge"></a>
+  <a href="https://github.com/modelcontextprotocol/registry"><img src="https://img.shields.io/badge/MCP_Registry-BGG_MCP-green" alt="MCP Registry"></a>
   <a href="https://go.dev/"><img src="https://img.shields.io/github/go-mod/go-version/kkjdaniel/bgg-mcp" alt="Go Version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/kkjdaniel/bgg-mcp" alt="License"></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-Protocol-blue" alt="MCP Protocol"></a>
@@ -67,10 +68,10 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 
 ```
 "Show me ZeeGarcia's game collection"
-"Show games rated 0+ in kkjdaniel's collection"
+"Show games rated 9+ in kkjdaniel's collection"
 "List unplayed games in rahdo's collection"
 "Find games for 6 players in kkjdaniel's collection"
-"Show me all the games rate 3 and below in my collection"
+"Show me all the games rated 3 and below in my collection"
 "What games in my collection does rahdo want?"
 "What games does kkjdaniel have that I want?"
 ```
@@ -106,11 +107,23 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 "Find 5 games similar to Troyes"
 ```
 
-## Setup
+## Installation
 
-You have two options for setting up, the easiest is to use the integration of Smithery.
+You have multiple options for installing BGG MCP:
 
-### A) Installing via Smithery (Easiest)
+### A) MCP Registry (Recommended)
+
+Install directly via the MCP Registry:
+
+```bash
+# Install using MCP CLI
+mcp install io.github.kkjdaniel/bgg-mcp
+
+# Or via Docker
+docker run -p 8080:8080 -e BGG_USERNAME=your_username ghcr.io/kkjdaniel/bgg-mcp:latest
+```
+
+### B) Installing via Smithery
 
 Get started in under a minute with [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp):
 
@@ -131,7 +144,7 @@ Add BGG MCP as a custom connector:
 
 That's it! The server uses the latest Streamable HTTP transport.
 
-### B) Manual Setup
+### C) Manual Setup
 
 #### 1. Install Go
 
@@ -202,8 +215,7 @@ You can optionally set the `BGG_USERNAME` environment variable to enable "me" an
 
 ```json
 "bgg": {
-    "command": "path/to/build/bgg-mcp",
-    "args": [],
+    ...
     "env": {
         "BGG_USERNAME": "your_bgg_username"
     }
@@ -212,8 +224,8 @@ You can optionally set the `BGG_USERNAME` environment variable to enable "me" an
 
 This enables:
 
-- **Collection queries**: "Show me my collection" instead of specifying your username
-- **User queries**: "Show me my BGG profile"
+- **Collection queries**: "Show my collection" instead of specifying your username
+- **User queries**: "Show my BGG profile"
 - **AI assistance**: The AI can automatically use your username for comparisons and analysis
 
 **Note**: When you use self-references (me, my, I) without setting BGG_USERNAME, you'll get a clear error message.
