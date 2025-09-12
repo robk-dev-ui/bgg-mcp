@@ -82,9 +82,10 @@ jobs:
 
       - name: Install MCP Publisher CLI
         run: |
-          curl -L https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher-linux-amd64 -o mcp-publisher
+          curl -fsSL https://github.com/modelcontextprotocol/mcp-cli/releases/latest/download/mcp-publisher-linux-x64 -o mcp-publisher
           chmod +x mcp-publisher
           sudo mv mcp-publisher /usr/local/bin/
+          mcp-publisher --version
 
       - name: Publish to MCP Registry
         env:
