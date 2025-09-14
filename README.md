@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="bgg-mcp-logo.png" width="200" alt="BGG MCP Logo">
+  <img src="images/bgg-mcp-logo.png" width="200" alt="BGG MCP Logo">
 </p>
 <h1 align="center">BGG MCP: BoardGameGeek MCP API Server</h1>
 
@@ -19,12 +19,12 @@ Price data is provided by [BoardGamePrices.co.uk](https://boardgameprices.co.uk)
 Game recommendations are powered by [Recommend.Games](https://recommend.games/), which provides algorithmic similarity recommendations based on BoardGameGeek data.
 
 <a href="https://boardgamegeek.com/">
-  <img src="powered-bgg.webp" width="160" alt="Powered by BGG">
+  <img src="images/powered-bgg.webp" width="160" alt="Powered by BGG">
 </a>
 
 ## Example
 
-![Example of BGG MCP in action](example.png)
+![Example of BGG MCP in action](images/example.png)
 
 ## Tools
 
@@ -42,7 +42,7 @@ Game recommendations are powered by [Recommend.Games](https://recommend.games/),
 - **trade-sales-post** - Generate a formatted sales post for your BGG 'for trade' collection with discounted market prices
 - **game-recommendations** - Get personalized game recommendations based on your BGG collection and preferences
 
-![Example of trade-sales-post prompt in action](prompt-example.png)
+![Example of trade-sales-post prompt in action](images/prompt-example.png)
 
 ## Example Prompts
 
@@ -111,19 +111,7 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 
 You have multiple options for installing BGG MCP:
 
-### A) MCP Registry (Recommended)
-
-Install directly via the MCP Registry:
-
-```bash
-# Install using MCP CLI
-mcp install io.github.kkjdaniel/bgg-mcp
-
-# Or via Docker
-docker run -p 8080:8080 -e BGG_USERNAME=your_username ghcr.io/kkjdaniel/bgg-mcp:latest
-```
-
-### B) Installing via Smithery
+### A) Installing via Smithery (Recommended)
 
 Get started in under a minute with [Smithery](https://smithery.ai/server/@kkjdaniel/bgg-mcp):
 
@@ -143,6 +131,14 @@ Add BGG MCP as a custom connector:
 3. Click **Connect** to authorise
 
 That's it! The server uses the latest Streamable HTTP transport.
+
+### B) MCP Registry
+
+Install via the MCP Registry:
+
+```bash
+mcp install io.github.kkjdaniel/bgg-mcp
+```
 
 ### C) Manual Setup
 
@@ -183,29 +179,6 @@ In the `settings.json` (VS Code / Cursor) or `claude_desktop_config.json` add th
 ```
 
 More details for configuring Claude can be [found here](https://modelcontextprotocol.io/quickstart/user).
-
-#### HTTP Mode (For Deployment)
-
-The server supports HTTP mode using Streamable HTTP transport for scalable deployments:
-
-```bash
-# Run with default port 8080
-./bgg-mcp -mode http
-
-# Run with custom port
-./bgg-mcp -mode http -port 3000
-
-# Or use environment variables
-MCP_MODE=http MCP_PORT=3000 ./bgg-mcp
-```
-
-When running in HTTP mode:
-
-- Single endpoint: `http://localhost:8080/mcp`
-- Supports stateless connections for better scalability
-- Automatic HTTPS when deployed via Smithery
-
-The Docker container runs in HTTP mode by default on port 8080.
 
 ## Optional Configuration
 

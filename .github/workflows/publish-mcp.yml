@@ -12,8 +12,8 @@ on:
         type: string
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: docker.io
+  IMAGE_NAME: kkjdaniel/bgg-mcp
 
 jobs:
   publish:
@@ -39,12 +39,11 @@ jobs:
           go build -o bgg-mcp main.go
           echo "✓ Build successful"
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: kkjdaniel
+          password: ${{ secrets.DOCKER_ACC }}
 
       - name: Extract metadata
         id: meta
@@ -92,7 +91,7 @@ jobs:
         run: |
           ./mcp-publisher publish
           echo "✓ Successfully published to MCP Registry"
-          echo "✓ Docker image published to: ghcr.io/kkjdaniel/bgg-mcp:${{ steps.meta.outputs.version }}"
+          echo "✓ Docker image published to: docker.io/kkjdaniel/bgg-mcp:${{ steps.meta.outputs.version }}"
           echo ""
           echo "Create a GitHub release manually with your release notes at:"
           echo "https://github.com/kkjdaniel/bgg-mcp/releases/new?tag=${{ github.ref_name }}"
