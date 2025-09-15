@@ -22,6 +22,9 @@ COPY --from=builder /app/bgg-mcp /usr/local/bin/bgg-mcp
 # Set executable permissions
 RUN chmod +x /usr/local/bin/bgg-mcp
 
+# Required MCP Registry label
+LABEL io.modelcontextprotocol.server.name="io.github.kkjdaniel/bgg-mcp"
+
 # Expose HTTP port for SSE server
 EXPOSE 8080
 
