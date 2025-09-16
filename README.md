@@ -24,32 +24,42 @@ Game recommendations are powered by [Recommend.Games](https://recommend.games/),
   <img src="images/powered-bgg.webp" width="160" alt="Powered by BGG">
 </a>
 
-## Example
+## Demo
 
-![Example of BGG MCP in action](images/example.png)
+<div align="center">
+  
+  [![Rules Tool Demo Video](https://img.youtube.com/vi/cNX4WwVbFko/maxresdefault.jpg)](https://youtu.be/cNX4WwVbFko)
+  
+  **[▶️ Watch the Rules Tool Demo Video](https://youtu.be/cNX4WwVbFko)**
+  
+</div>
 
 ## Tools
 
-- **Search** - Search for board games on BoardGameGeek with type filtering (base games, expansions, or all)
-- **Game Details** - Get detailed information about a specific board game
-- **Collection** - Query and filter a user's game collection with extensive filtering options
-- **Hotness** - Get the current BGG hotness list
-- **User** - Get user profile information
-- **Price** - Get current prices from multiple retailers using BGG IDs
-- **Trade Finder** - Find trading opportunities between two BGG users
-- **Recommender** - Get game recommendations based on similarity to a specific game
-- **Thread Details** - Get the full content of a specific BGG forum thread including all posts
+### Core Tools
+
+| Tool                 | Description                                                                 |
+| -------------------- | --------------------------------------------------------------------------- |
+| `bgg-search`         | Search for board games with type filtering (base games, expansions, or all) |
+| `bgg-details`        | Get detailed information about a specific board game                        |
+| `bgg-collection`     | Query and filter a user's game collection with extensive filtering options  |
+| `bgg-hot`            | Get the current BGG hotness list                                            |
+| `bgg-user`           | Get user profile information                                                |
+| `bgg-price`          | Get current prices from multiple retailers using BGG IDs                    |
+| `bgg-trade-finder`   | Find trading opportunities between two BGG users                            |
+| `bgg-recommender`    | Get game recommendations based on similarity to a specific game             |
+| `bgg-thread-details` | Get the full content of a specific BGG forum thread including all posts     |
 
 ### 🧪 Experimental Tools
 
-- **Rules** - Answer rules questions by searching BGG forums for relevant discussions and clarifications
+| Tool        | Description                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------ |
+| `bgg-rules` | Answer rules questions by searching BGG forums for relevant discussions and clarifications |
 
 ## Prompts
 
-- **trade-sales-post** - Generate a formatted sales post for your BGG 'for trade' collection with discounted market prices
-- **game-recommendations** - Get personalized game recommendations based on your BGG collection and preferences
-
-![Example of trade-sales-post prompt in action](images/prompt-example.png)
+- **Trade Sales Post** - Generate a formatted sales post for your BGG 'for trade' collection with discounted market prices
+- **Game Recommendations** - Get personalized game recommendations based on your BGG collection and preferences
 
 ## Example Prompts
 
@@ -137,7 +147,7 @@ Get started in under a minute with [Smithery](https://smithery.ai/server/@kkjdan
 2. **Follow the quick setup** - Smithery handles all configuration automatically
 3. **Start using BGG tools** immediately - no manual setup required
 
-#### For Claude Desktop Users
+#### Or via Connectors for Claude users (Preferred)
 
 Add BGG MCP as a custom connector:
 
@@ -149,6 +159,8 @@ Add BGG MCP as a custom connector:
 3. Click **Connect** to authorise
 
 That's it! The server uses the latest Streamable HTTP transport.
+
+**Tip:** Connectors added on Claude Desktop will also appear and work on mobile!
 
 ### B) MCP Registry
 
