@@ -31,9 +31,6 @@ func RulesTool() (mcp.Tool, server.ToolHandlerFunc) {
 		mcp.WithNumber("id",
 			mcp.Description("The BoardGameGeek ID of the board game"),
 		),
-		mcp.WithNumber("limit",
-			mcp.Description("Maximum number of threads to return (default: 100, max: 200)"),
-		),
 	)
 
 	handler := func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
@@ -65,13 +62,6 @@ func RulesTool() (mcp.Tool, server.ToolHandlerFunc) {
 			return mcp.NewToolResultText("Either 'name' or 'id' parameter is required"), nil
 		}
 
-		limit := 100
-		if l, ok := arguments["limit"].(float64); ok {
-			limit = int(l)
-			if limit > 200 {
-				limit = 200
-			}
-		}
 		forums, err := forumlist.Query(gameID, forumlist.Thing)
 		if err != nil {
 			return mcp.NewToolResultText(fmt.Sprintf("Failed to get forum list: %v", err)), nil
@@ -100,10 +90,7 @@ func RulesTool() (mcp.Tool, server.ToolHandlerFunc) {
 
 		allThreads := []forum.Thread{}
 		page := 1
-		maxPages := (limit / 50) + 1
-		if maxPages > 4 {
-			maxPages = 4
-		}
+		maxPages := 10 // Reasonable max to avoid infinite loops
 
 		for page <= maxPages {
 			var rulesForumData *forum.Forum
@@ -129,18 +116,15 @@ func RulesTool() (mcp.Tool, server.ToolHandlerFunc) {
 
 			allThreads = append(allThreads, rulesForumData.Threads...)
 
-			if len(allThreads) >= limit || len(rulesForumData.Threads) < 50 {
+			// If we got less than 50 threads, we've reached the last page
+			if len(rulesForumData.Threads) < 50 {
 				break
 			}
 
 			page++
 		}
 
-		if len(allThreads) > limit {
-			result.Threads = allThreads[:limit]
-		} else {
-			result.Threads = allThreads
-		}
+		result.Threads = allThreads
 
 		// Return structured XML response with instructions for the AI
 		var response strings.Builder
@@ -166,14 +150,12 @@ func RulesTool() (mcp.Tool, server.ToolHandlerFunc) {
 
 		response.WriteString("<threads>\n")
 		response.WriteString("<!-- Threads are sorted by most recent activity. High reply counts often indicate thorough rules discussions. -->\n")
+		response.WriteString("<!-- Look for threads titled 'Errata', 'FAQ', 'Rules Questions', 'Clarifications' or similar generic titles - these often contain multiple rule clarifications not obvious from the title. -->\n")
 		for _, thread := range result.Threads {
 			response.WriteString("  <thread>\n")
 			response.WriteString(fmt.Sprintf("    <id>%d</id>\n", thread.ID))
 			response.WriteString(fmt.Sprintf("    <subject>%s</subject>\n", html.EscapeString(thread.Subject)))
-			response.WriteString(fmt.Sprintf("    <author>%s</author>\n", html.EscapeString(thread.Author)))
 			response.WriteString(fmt.Sprintf("    <replies>%d</replies>\n", thread.NumArticles-1))
-			response.WriteString(fmt.Sprintf("    <posted>%s</posted>\n", thread.PostDate))
-			response.WriteString(fmt.Sprintf("    <last_post>%s</last_post>\n", thread.LastPostDate))
 			response.WriteString(fmt.Sprintf("    <link>https://boardgamegeek.com/thread/%d</link>\n", thread.ID))
 			response.WriteString("  </thread>\n")
 		}
