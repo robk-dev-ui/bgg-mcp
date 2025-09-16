@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/kkjdaniel/gogeek/search"
 	"github.com/kkjdaniel/gogeek/thing"
 )
 
@@ -114,4 +115,47 @@ func extractEssentialInfoList(items []thing.Item) []EssentialGameInfo {
 		result[i] = extractEssentialInfo(item)
 	}
 	return result
+}
+
+func findBestGameMatch(gameName string) (*search.SearchResult, error) {
+	searchResults, err := search.Query(gameName, true)
+	if err != nil {
+		return nil, fmt.Errorf("search failed: %w", err)
+	}
+	
+	if len(searchResults.Items) == 0 {
+		searchResults, err = search.Query(gameName, false)
+		if err != nil {
+			return nil, fmt.Errorf("search failed: %w", err)
+		}
+		if len(searchResults.Items) == 0 {
+			return nil, fmt.Errorf("no games found matching '%s'", gameName)
+		}
+	}
+	
+	bestMatch := &searchResults.Items[0]
+	gameNameLower := strings.ToLower(gameName)
+	
+	for i := range searchResults.Items {
+		item := &searchResults.Items[i]
+		itemNameLower := strings.ToLower(item.Name.Value)
+		
+		if itemNameLower == gameNameLower {
+			return item, nil
+		}
+		
+		if bestMatch.Type == "boardgameexpansion" && item.Type == "boardgame" {
+			if strings.Contains(itemNameLower, gameNameLower) || strings.Contains(gameNameLower, itemNameLower) {
+				bestMatch = item
+			}
+		}
+		
+		if bestMatch.Type == item.Type {
+			if strings.HasPrefix(itemNameLower, gameNameLower) && !strings.HasPrefix(strings.ToLower(bestMatch.Name.Value), gameNameLower) {
+				bestMatch = item
+			}
+		}
+	}
+	
+	return bestMatch, nil
 }

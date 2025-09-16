@@ -9,7 +9,6 @@ import (
 
 	"github.com/kkjdaniel/gogeek/forum"
 	"github.com/kkjdaniel/gogeek/forumlist"
-	"github.com/kkjdaniel/gogeek/search"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
@@ -25,7 +24,7 @@ type RulesForumResult struct {
 
 func RulesTool() (mcp.Tool, server.ToolHandlerFunc) {
 	tool := mcp.NewTool("bgg-rules",
-		mcp.WithDescription("Find rules clarifications and discussions for a board game from BoardGameGeek forums. Returns thread summaries that can be explored further with bgg-thread-details."),
+		mcp.WithDescription("Use this tool when users ask rules questions about board games (e.g., 'How does X work?', 'Can I do Y?', 'What happens when Z?'). Searches BoardGameGeek rules forums to find answers and clarifications from the community."),
 		mcp.WithString("name",
 			mcp.Description("The name of the board game"),
 		),
@@ -56,15 +55,12 @@ func RulesTool() (mcp.Tool, server.ToolHandlerFunc) {
 			}
 		} else if nameVal, ok := arguments["name"]; ok && nameVal != nil {
 			gameName = nameVal.(string)
-			searchResults, err := search.Query(gameName)
+			bestMatch, err := findBestGameMatch(gameName)
 			if err != nil {
-				return mcp.NewToolResultText(fmt.Sprintf("Failed to search for game: %v", err)), nil
+				return mcp.NewToolResultText(fmt.Sprintf("Failed to find game: %v", err)), nil
 			}
-			if len(searchResults.Items) == 0 {
-				return mcp.NewToolResultText(fmt.Sprintf("No games found matching '%s'", gameName)), nil
-			}
-			gameID = searchResults.Items[0].ID
-			gameName = searchResults.Items[0].Name.Value
+			gameID = bestMatch.ID
+			gameName = bestMatch.Name.Value
 		} else {
 			return mcp.NewToolResultText("Either 'name' or 'id' parameter is required"), nil
 		}
@@ -151,7 +147,8 @@ func RulesTool() (mcp.Tool, server.ToolHandlerFunc) {
 		response.WriteString("<rules_forum_analysis>\n")
 		response.WriteString("<instructions>\n")
 		response.WriteString("Your goal is to help the user resolve their rules question or understand game mechanics.\n")
-		response.WriteString("1. First, identify threads that directly address the user's specific rules query based on their titles\n")
+		response.WriteString("IMPORTANT: First verify the game found matches what the user is asking about. If it seems wrong, mention it.\n")
+		response.WriteString("1. Identify threads that directly address the user's specific rules query based on their titles\n")
 		response.WriteString("2. Look for threads with high reply counts (indicating thorough discussions) or official-sounding titles\n")
 		response.WriteString("3. Present the 1-4 most relevant threads with brief descriptions of what the titles suggest they discuss\n")
 		response.WriteString("4. For the most promising thread(s), proactively use bgg-thread-details to fetch the actual content\n")

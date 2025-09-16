@@ -1,7 +1,7 @@
 <p align="center">
   <img src="images/bgg-mcp-logo.png" width="200" alt="BGG MCP Logo">
 </p>
-<h1 align="center">BGG MCP: BoardGameGeek MCP API Server</h1>
+<h1 align="center">BGG MCP: BoardGameGeek MCP Server</h1>
 
 <p align="center">
   <a href="https://smithery.ai/server/@kkjdaniel/bgg-mcp"><img src="https://smithery.ai/badge/@kkjdaniel/bgg-mcp" alt="smithery badge"></a>
@@ -117,12 +117,13 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 ### 📖 Rules (Experimental)
 
 ```
-"Can you play cards during another player's turn in Wingspan?"
-"How does monster focus work in Gloomhaven?"
-"What happens when you can't pay a feeding cost in Ark Nova?"
-"Can you use multiple spirit powers in the same turn in Spirit Island?"
-"How do ties work for area control in Root?"
+"[Your rules question about any board game] - use bgg-rules"
+"How does [game mechanic] work in [game name]? use bgg-rules"
+"Can I [specific action] in [game name]? use bgg-rules"
+"What happens when [situation] in [game name]? use bgg-rules"
 ```
+
+Note: Include "use bgg-rules" in your question to ensure the AI searches BGG forums for answers.
 
 ## Installation
 

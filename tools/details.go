@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/kkjdaniel/gogeek/search"
 	"github.com/kkjdaniel/gogeek/thing"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
@@ -76,11 +75,11 @@ func DetailsTool() (mcp.Tool, server.ToolHandlerFunc) {
 			gameIDs = []int{gameID}
 		} else if nameVal, ok := arguments["name"]; ok && nameVal != nil {
 			name := nameVal.(string)
-			result, err := search.Query(name, true)
-			if err != nil || len(result.Items) == 0 {
-				return mcp.NewToolResultText("No search result found"), nil
+			bestMatch, err := findBestGameMatch(name)
+			if err != nil {
+				return mcp.NewToolResultText(fmt.Sprintf("Failed to find game: %v", err)), nil
 			}
-			gameIDs = []int{result.Items[0].ID}
+			gameIDs = []int{bestMatch.ID}
 		} else {
 			return mcp.NewToolResultText("Either 'name', 'id', or 'ids' parameter must be provided"), nil
 		}
