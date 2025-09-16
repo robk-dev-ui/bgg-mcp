@@ -49,6 +49,12 @@ func createMCPServer() *server.MCPServer {
 	recommenderTool, recommenderHandler := tools.RecommenderTool()
 	s.AddTool(recommenderTool, recommenderHandler)
 
+	rulesTool, rulesHandler := tools.RulesTool()
+	s.AddTool(rulesTool, rulesHandler)
+
+	threadDetailsTool, threadDetailsHandler := tools.ThreadDetailsTool()
+	s.AddTool(threadDetailsTool, threadDetailsHandler)
+
 	prompts.RegisterPrompts(s)
 
 	return s

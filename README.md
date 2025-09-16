@@ -38,6 +38,11 @@ Game recommendations are powered by [Recommend.Games](https://recommend.games/),
 - **Price** - Get current prices from multiple retailers using BGG IDs
 - **Trade Finder** - Find trading opportunities between two BGG users
 - **Recommender** - Get game recommendations based on similarity to a specific game
+- **Thread Details** - Get the full content of a specific BGG forum thread including all posts
+
+### 🧪 Experimental Tools
+
+- **Rules** - Answer rules questions by searching BGG forums for relevant discussions and clarifications
 
 ## Prompts
 
@@ -107,6 +112,16 @@ Here are some example prompts you can use to interact with the BGG MCP tools:
 "Recommend games similar to Wingspan"
 "What games are like Azul but with at least 1000 ratings?"
 "Find 5 games similar to Troyes"
+```
+
+### 📖 Rules (Experimental)
+
+```
+"Can you play cards during another player's turn in Wingspan?"
+"How does monster focus work in Gloomhaven?"
+"What happens when you can't pay a feeding cost in Ark Nova?"
+"Can you use multiple spirit powers in the same turn in Spirit Island?"
+"How do ties work for area control in Root?"
 ```
 
 ## Installation
