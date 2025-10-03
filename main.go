@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -99,32 +100,44 @@ func runHTTPServer(mcpServer *server.MCPServer, port string) {
 	if baseURL == "" {
 		baseURL = fmt.Sprintf("http://localhost:%s", port)
 	}
-	
+
+	mux := http.NewServeMux()
+
+	// Register REST endpoints
+	tools.RegisterRESTHandlers(mux)
+
+	// MCP HTTP server (streamable) mounted under /mcp
 	httpServer := server.NewStreamableHTTPServer(mcpServer,
 		server.WithEndpointPath("/mcp"),
 		server.WithStateLess(true),
 		server.WithHeartbeatInterval(30*time.Second),
 	)
 
+	mux.HandleFunc("/mcp", func(w http.ResponseWriter, r *http.Request) {
+		// Delegate to existing MCP server handler
+		httpServer.ServeHTTP(w, r)
+	})
+
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+
+	serverInstance := &http.Server{Addr: ":" + port, Handler: mux}
 
 	go func() {
 		<-sigChan
 		log.Println("Shutting down HTTP server...")
-		
 		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer shutdownCancel()
-		
-		if err := httpServer.Shutdown(shutdownCtx); err != nil {
+		if err := serverInstance.Shutdown(shutdownCtx); err != nil {
 			log.Printf("Error during shutdown: %v", err)
 		}
 	}()
 
 	log.Printf("Starting HTTP server on port %s", port)
 	log.Printf("HTTP endpoint: %s/mcp", baseURL)
-	
-	if err := httpServer.Start(":" + port); err != nil {
+	log.Printf("REST endpoints: %s/health, %s/v1/bgg/search, %s/v1/bgg/details/{id}", baseURL, baseURL, baseURL)
+
+	if err := serverInstance.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("HTTP server error: %v", err)
 	}
 }

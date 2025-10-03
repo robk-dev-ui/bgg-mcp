@@ -3,35 +3,30 @@
 
 # Builder stage
 FROM golang:1.23-alpine AS builder
-RUN apk add --no-cache git
+RUN apk add --no-cache git ca-certificates
 WORKDIR /app
 # Cache dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 # Copy source
 COPY . .
-# Build binary
-RUN go build -o bgg-mcp main.go
+# Build binary (smaller, static-ish)
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o bgg-mcp main.go
 
 # Final stage
-FROM alpine:latest
+FROM alpine:3.19
 RUN apk add --no-cache ca-certificates
 WORKDIR /app
-# Copy binary
 COPY --from=builder /app/bgg-mcp /usr/local/bin/bgg-mcp
-# Set executable permissions
 RUN chmod +x /usr/local/bin/bgg-mcp
 
-# Required MCP Registry label
 LABEL io.modelcontextprotocol.server.name="io.github.kkjdaniel/bgg-mcp"
 
-# Expose HTTP port for SSE server
 EXPOSE 8080
-
-# Set environment variables for HTTP mode
 ENV MCP_MODE=http
 ENV MCP_PORT=8080
-# MCP_BASE_URL will be set by Smithery at runtime with the proper HTTPS URL
 
-# Default command - runs in HTTP mode
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD wget -qO- http://localhost:8080/health || exit 1
+
 ENTRYPOINT ["/usr/local/bin/bgg-mcp"]
+CMD ["-mode","http","-port","8080"]

@@ -12,6 +12,7 @@ type EssentialGameInfo struct {
 	ID           int      `json:"id"`
 	Name         string   `json:"name"`
 	Description  string   `json:"description"`
+	DescriptionShort string `json:"description_short,omitempty"`
 	Year         int      `json:"year"`
 	Complexity   float64  `json:"complexity"`
 	Players      string   `json:"players"`
